@@ -36,7 +36,7 @@ To move around use keys WASD (W up, A left, S down, D right)
 
 To exit the program press ENTER (return);
 
-## What is should look like
+## What it should look like
 
 https://i.imgur.com/ABl6LLt.png
 
