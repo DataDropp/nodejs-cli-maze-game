@@ -32,6 +32,8 @@ npm install cli-color
 node maze.js
 ```
 
+To exit the program press ENTER (return);
+
 ## What is should look like
 
 https://i.imgur.com/ABl6LLt.png
