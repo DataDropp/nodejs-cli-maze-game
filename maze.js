@@ -1,8 +1,16 @@
 const keypress = require('keypress');
 const color = require('cli-color');
 keypress(process.stdin);
-var boardArray = generateMaze(100, 20);
+var boardArray = generateMaze(100, 20); //width, height
 let position = [5, 5, 5, 5]; //x,y, previousX,previousY
+let amtOfPaths = 0;
+boardArray.forEach(element => {
+    element.forEach(element => {
+        if(element == 0) {
+            amtOfPaths++;
+        }
+    })
+});
 render(boardArray);
 process.stdin.on('keypress', function (ch, key) {
     if (key.name == 'return') process.stdin.pause();
@@ -110,7 +118,19 @@ function generateMaze(x, y) {
         }
     }
 }
-
+function checkBoard(){
+    let amtOfTrails = 0;
+    boardArray.forEach(element => {
+        element.forEach(element => {
+            if(element == 3) amtOfTrails++;
+        })
+    })
+    // console.log(amtOfTrails,amtOfPaths);
+    if(amtOfTrails == amtOfPaths) {
+        process.stdin.pause();
+        return console.log(`YOU COMPLETED MAZE GAME | GAME TYPE: 'BLACK OUT'`)
+    }
+}
 function render(boardArray) {
     let string = `\n\n\n\n\n\n\n\n\n`;
     for (let i = 0; i < boardArray[0].length + 2; i++) {
@@ -131,6 +151,7 @@ function render(boardArray) {
         string = string + '=';
     }
     console.log(string);
+    checkBoard();
 }
 
 
