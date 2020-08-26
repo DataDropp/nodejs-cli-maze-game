@@ -25,6 +25,7 @@ npm install cli-color
 * [ ] Option to save current maze state to a file (bitmap).
 * [ ] Option to load previously saved maze state from a file (bitmap).
 * [ ] Option to toggle red trail.
+* [ ] Command line arguments.
 
 ## Usage
 
