@@ -1,12 +1,23 @@
 const keypress = require('keypress');
 const color = require('cli-color');
+const generateMaze = require('./mazeGeneration').generateMaze;
+const gameMechanics = require('./gameMechanics');
+const args = process.argv;
+if (args.find((arg) => {return arg == "--help"})) {
+    return console.log(`y u need halp? Dis ez 2 uz. k fwine...\n
+    -g, --game-type gametype | Set a game type. (blackout, classic, invisible ) | Default: blackout
+    -s, --save filename | Save the current maze state and gametype to a file | Default: none
+    -r, --restore filename | Loads a previously saved maze state and gametype from a file | Default: none
+    -R, --trail true/false | 
+    `);
+}
 keypress(process.stdin);
-var boardArray = generateMaze(100, 20); //width, height
+var boardArray = generateMaze(10, 10); //width, height
 let position = [5, 5, 5, 5]; //x,y, previousX,previousY
 let amtOfPaths = 0;
 boardArray.forEach(element => {
     element.forEach(element => {
-        if(element == 0) {
+        if (element == 0) {
             amtOfPaths++;
         }
     })
@@ -48,89 +59,6 @@ process.stdin.on('keypress', function (ch, key) {
     }
     render(boardArray);
 });
-
-
-function generateMaze(x, y) {
-    let maze = []
-    for (let i = 0; i < y; i++) {
-        maze.push([]);
-    }
-    maze.forEach(element => {
-        for (let i = 0; i < x; i++) {
-            element.push(1);
-        }
-    })
-    recursive(5, 5);
-    maze[5][5] = 2
-    return maze;
-    function recursive(rows, cols) {
-        let randDirs = getRandomDirections()
-        function getRandomDirections() {
-            let randoms = [];
-            for (let i = 0; i < 4; i++) {
-                randoms.push(i + 1);
-            }
-            return shuffle(randoms);
-            function shuffle(array) {
-                let counter = array.length;
-                while (counter > 0) {
-                    let index = Math.floor(Math.random() * counter);
-                    counter--;
-                    let temp = array[counter];
-                    array[counter] = array[index];
-                    array[index] = temp;
-                }
-                return array;
-            }
-        }
-        for (let i = 0; i < randDirs.length; i++) {
-            switch (randDirs[i]) {
-                case 1:
-                    if (cols - 2 <= -1) return;
-                    if (maze[cols - 2][rows] != 0) {
-                        maze[cols - 2][rows] = 0;
-                        maze[cols - 1][rows] = 0;
-                        recursive(rows, cols - 2)
-                    }
-                    break;
-                case 2:
-                    if (rows + 2 >= x) return;
-                    if (maze[cols][rows + 2] != 0) {
-                        maze[cols][rows + 2] = 0;
-                        maze[cols][rows + 1] = 0;
-                        recursive(rows + 2, cols);
-                    }
-                case 3:
-                    if (cols + 2 >= y + 1) return;
-                    if (maze[cols + 2][rows] != 0) {
-                        maze[cols + 2][rows] = 0;
-                        maze[cols + 1][rows] = 0;
-                        recursive(rows, cols + 2)
-                    }
-                case 4:
-                    if (rows - 2 <= 0) return;
-                    if (maze[cols][rows - 2] != 0) {
-                        maze[cols][rows - 2] = 0;
-                        maze[cols][rows - 1] = 0;
-                        recursive(rows - 2, cols);
-                    }
-            }
-        }
-    }
-}
-function checkBoard(){
-    let amtOfTrails = 0;
-    boardArray.forEach(element => {
-        element.forEach(element => {
-            if(element == 3) amtOfTrails++;
-        })
-    })
-    // console.log(amtOfTrails,amtOfPaths);
-    if(amtOfTrails == amtOfPaths) {
-        process.stdin.pause();
-        return console.log(`YOU COMPLETED MAZE GAME | GAME TYPE: 'BLACK OUT'`)
-    }
-}
 function render(boardArray) {
     let string = `\n\n\n\n\n\n\n\n\n`;
     for (let i = 0; i < boardArray[0].length + 2; i++) {
@@ -151,7 +79,7 @@ function render(boardArray) {
         string = string + '=';
     }
     console.log(string);
-    checkBoard();
+    gameMechanics.checkBoard(boardArray,amtOfPaths);
 }
 
 
