@@ -44,3 +44,6 @@ https://i.imgur.com/ABl6LLt.png
 # Note
 
 I am unsure if my code is 'good' at all, I could probably optimize a ton of things within the code to make it faster and smaller file size. Constructive criticism appreciated
+# Licence
+GNU GPL v3
+https://choosealicense.com/licenses/gpl-3.0/
